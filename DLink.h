@@ -21,7 +21,6 @@ private:
   const int     pIn, pOut;
   bool          isBegin;
   unsigned long beginTime;
-  bool edge(int mode, unsigned long timeout);
 };
 
 #endif

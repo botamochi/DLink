@@ -21,25 +21,18 @@ DLink::DLink(int inputPin, int outputPin)
 dframe DLink::receive()
 {
   dframe frame = 0;
-  unsigned long tm1, tm2, thr;
+  unsigned long tm, thr;
 
   // リセットパルス
   while (digitalRead(pIn) == HIGH);
-  if (edge(RISING, 100) == false) return 0;
   // スタートパルス
-  tm1 = micros();
-  if (edge(FALLING, 8) == false) return 0;
-  tm2 = micros();
-  thr = tm2 - tm1; // 基準値
-  if (edge(RISING, 8) == false) return 0;
+  if ((thr = pulseIn(pIn, HIGH, 100000)) == 0) return 0;
   // データパルス
   for (int i = 0; i < 16; i++) {
-    tm1 = micros();
-    if (edge(FALLING, 8) == false) return 0;
-    tm2 = micros();
-    if (tm2 - tm1 > thr) frame |= (1<<i);
-    if (edge(RISING, 8) == false) return 0;
+    if ((tm = pulseIn(pIn, HIGH, 8000)) == 0) return 0;
+    if (tm > thr) frame |= (1<<i);
   }
+  while (digitalRead(pIn) == LOW);
   return frame;
 }
 
@@ -81,24 +74,4 @@ void DLink::send(dframe frame)
   digitalWrite(pOut, HIGH);
   isBegin = false;
   delayMicroseconds(1000);
-}
-
-// エッジ検出
-// 立ち上がりと立ち下がりのみ検出
-bool DLink::edge(int mode, unsigned long timeout)
-{
-  int val;
-  unsigned long tm = millis();
-  
-  if (mode == RISING) {
-    val = LOW;
-  } else if (mode == FALLING) {
-    val = HIGH;
-  } else {
-    return false;
-  }
-  while (digitalRead(pIn) == val) {
-    if (millis() - tm >= timeout) return false;
-  }
-  return true;
 }
