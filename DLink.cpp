@@ -23,11 +23,11 @@ dframe DLink::receive()
   dframe frame = 0;
   unsigned long tm, thr;
 
-  // リセットパルス
+  // Start
   while (digitalRead(pIn) == HIGH);
-  // スタートパルス
+  // Head
   if ((thr = pulseIn(pIn, HIGH, 100000)) == 0) return 0;
-  // データパルス
+  // Data
   for (int i = 0; i < 16; i++) {
     if ((tm = pulseIn(pIn, HIGH, 8000)) == 0) return 0;
     if (tm > thr) frame |= (1<<i);
@@ -37,7 +37,8 @@ dframe DLink::receive()
 }
 
 // 送信開始
-// リセットパルスを送信する
+// Startパルスを送信する
+// 先に送信しておくことで60msの間に処理が行える
 void DLink::begin()
 {
   if (isBegin == true) return;
@@ -49,15 +50,15 @@ void DLink::begin()
 // 送信
 void DLink::send(dframe frame)
 {
-  // リセットパルス
+  // Start
   begin();
   while (millis() - beginTime < 60);
-  // スタートパルス
+  // Head
   digitalWrite(pOut, HIGH);
   delayMicroseconds(2000);
   digitalWrite(pOut, LOW);
   delayMicroseconds(1000);
-  // データパルス
+  // Data
   for (int i = 0; i < 16; i++) {
     if (frame & (1<<i)) {
       digitalWrite(pOut, HIGH);
