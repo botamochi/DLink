@@ -14,7 +14,7 @@ class DLink
 {
 public:
   DLink(int inputPin, int outputPin);
-  dframe receive(void);
+  dframe receive(unsigned int timeout = 0);
   void   begin(void);
   void   send(dframe frame);
 private:

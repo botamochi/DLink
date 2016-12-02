@@ -17,14 +17,23 @@ DLink::DLink(int inputPin, int outputPin)
 }
 
 // 受信
+// 引数:Startパルスを受信する際のタイムアウト(ms)
 // 失敗すると0を返す
-dframe DLink::receive()
+dframe DLink::receive(unsigned int timeout)
 {
   dframe frame = 0;
   unsigned long tm, thr;
 
   // Start
-  while (digitalRead(pIn) == HIGH);
+  if (timeout == 0) {
+    while (digitalRead(pIn) == HIGH);
+  } else {
+    while (digitalRead(pIn) == HIGH) {
+      delay(1);
+      timeout--;
+      if (timeout == 0) return 0;
+    }
+  }
   // Head
   if ((thr = pulseIn(pIn, HIGH, 100000)) == 0) return 0;
   // Data
