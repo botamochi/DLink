@@ -26,8 +26,7 @@ void loop() {
   senddata.field.victory = DLinkOrigin::LOSE;
   senddata.field.version = DLinkOrigin::VER1;
   // 育成ギアと通信
-  dlink.load(senddata);
-  recvdata = dlink.battle(true);
+  recvdata = dlink.battle(senddata);
   // 受信フレームをPCに送信
   Serial.println("===== Battle Success =====");
   Serial.print("frame[0] : 0b");

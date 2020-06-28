@@ -78,13 +78,10 @@ public:
     WIN  = 0b0001,
     LOSE = 0b0010
   };
-private:
-  DataSetOrigin dataset;
 public:
   DLinkOrigin(int ioPin) : DLink(ioPin) {}
   DLinkOrigin(int inputPin, int outputPin) : DLink(inputPin, outputPin) {}
-  void load(DataSetOrigin dataset) { this->dataset = dataset; }
-  DataSetOrigin battle(bool mode, unsigned int timeout = 0);
+  DataSetOrigin battle(DataSetOrigin dataset, bool mode = true, unsigned int timeout = 0);
 };
 
 #endif

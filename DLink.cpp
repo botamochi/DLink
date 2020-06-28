@@ -117,7 +117,7 @@ void DLink::send(dframe frame)
 // mode : true->自分からバトル開始, false->バトル待ち
 // 戻り値 : true->通信成功, false->通信失敗
 //--------------------------------------------------
-DataSetOrigin DLinkOrigin::battle(bool mode, unsigned int timeout)
+DataSetOrigin DLinkOrigin::battle(DataSetOrigin dataset, bool mode, unsigned int timeout)
 {
   int i;
   DataSetOrigin recvdata;
