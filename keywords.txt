@@ -1,5 +1,40 @@
-DLink	KEYWORD1
+##############################
+# class and type
+##############################
 dframe	KEYWORD1
+DLink	KEYWORD1
+DLinkOrigin	KEYWORD1
+DataSetOrigin	KEYWORD1
+##############################
+# field and method
+##############################
 receive	KEYWORD2
 begin	KEYWORD2
 send	KEYWORD2
+battle	KEYWORD2
+load	KEYWORD2
+species	KEYWORD2
+effort	KEYWORD2
+victory	KEYWORD2
+version	KEYWORD2
+##############################
+# literals
+##############################
+WIN	LITERAL1
+LOSE	LITERAL1
+VER1	LITERAL1
+VER2	LITERAL1
+VER3	LITERAL1
+VER4	LITERAL1
+VER5	LITERAL1
+AGUMON	LITERAL1
+BETAMON	LITERAL1
+GREYMON	LITERAL1
+TYRANOMON	LITERAL1
+DEVIMON	LITERAL1
+MERAMON	LITERAL1
+SEADRAMON	LITERAL1
+AIRDRAMON	LITERAL1
+NUMEMON	LITERAL1
+METALGREYMON	LITERAL1
+MONZAEMON	LITERAL1

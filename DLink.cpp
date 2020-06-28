@@ -110,3 +110,46 @@ void DLink::send(dframe frame)
   isBegin = false;
   delayMicroseconds(1000);
 }
+
+
+//--------------------------------------------------
+// 初代ギアのバトル
+// mode : true->自分からバトル開始, false->バトル待ち
+// 戻り値 : true->通信成功, false->通信失敗
+//--------------------------------------------------
+DataSetOrigin DLinkOrigin::battle(bool mode, unsigned int timeout)
+{
+  int i;
+  DataSetOrigin recvdata;
+
+  if (mode == true) {
+    dataset.field.padding1 = ~((unsigned char)dataset.field.effort << 4 | dataset.field.species);
+    dataset.field.padding2 = ~((unsigned char)dataset.field.version << 4 | dataset.field.victory);
+    for (i = 0; i < 2; i++) {
+      send(dataset.frame[i]);
+      recvdata.frame[i] = receive(timeout);
+      if (recvdata.frame[i] == 0) {
+        recvdata.frame[0] = 0;
+        recvdata.frame[1] = 0;
+        return recvdata;
+      }
+    }
+  } else {
+    dataset.field.padding1 = ~((unsigned char)dataset.field.effort << 4 | dataset.field.species);
+    for (i = 0; i < 2; i++) {
+      recvdata.frame[i] = receive(timeout);
+      if (recvdata.frame[i] == 0) {
+        recvdata.frame[0] = 0;
+        recvdata.frame[1] = 0;
+        return recvdata;
+      }
+      begin();
+      if (i == 1) {
+        dataset.field.victory = recvdata.field.victory == WIN ? LOSE : WIN;
+        dataset.field.padding2 = ~((unsigned char)dataset.field.version << 4 | dataset.field.victory);
+      }
+      send(dataset.frame[i]);
+    }
+  }
+  return recvdata;
+}
