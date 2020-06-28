@@ -18,6 +18,7 @@ typedef unsigned int dframe;
 class DLink
 {
 public:
+  DLink(int ioPin) : DLink(ioPin, ioPin) {} // 入出力ピンを同じにする場合
   DLink(int inputPin, int outputPin);
   dframe receive(unsigned int timeout = 0);
   void   begin(void);

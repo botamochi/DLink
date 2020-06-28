@@ -15,7 +15,7 @@ DLink::DLink(int inputPin, int outputPin)
   : pIn(inputPin), pOut(outputPin)
 {
   pinMode(pIn, INPUT);
-  pinMode(pOut, OUTPUT);
+  pinMode(pOut, INPUT); // 送信時にOUTPUTにする
   digitalWrite(pOut, HIGH);
   isBegin = false;
 }
@@ -65,6 +65,7 @@ dframe DLink::receive(unsigned int timeout)
 void DLink::begin()
 {
   if (isBegin == true) return;
+  pinMode(pOut, OUTPUT);
   digitalWrite(pOut, LOW);
   isBegin = true;
   beginTime = millis();
@@ -105,6 +106,7 @@ void DLink::send(dframe frame)
     }
   }
   digitalWrite(pOut, HIGH);
+  pinMode(pOut, INPUT);
   isBegin = false;
   delayMicroseconds(1000);
 }
